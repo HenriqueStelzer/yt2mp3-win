@@ -1,0 +1,6 @@
+InquirerPy
+pyperclip
+python-vlc
+pytubefix
+youtube_search
+mutagen
