@@ -4,7 +4,7 @@ Run the following commands for the command instalation:
 sudo pip3 install -r requirements.txt
 '''
 
-'''bash
+bash'''
 sudo mv ../yt2mp3 ~/.local/share
 '''
 
