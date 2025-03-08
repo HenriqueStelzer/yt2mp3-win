@@ -3,7 +3,7 @@ install:
 	. venv/bin/activate && pip install -r requirements.txt  
 	mkdir -p ~/.local/bin  
 	mv ../yt2mp3 ~/.local/bin/  
-	chmod +x ~/.local/bin/yt2mp3  
+	chmod +x ~/.local/bin/yt2mp3/yt2mp3
 
 clean:  
 	rm -rf venv  
