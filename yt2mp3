@@ -1,2 +1,2 @@
 #!/bin/bash
-python3 ~/.local/share/yt2mp3/app.py
+python3 ~/.local/bin/yt2mp3/app.py
