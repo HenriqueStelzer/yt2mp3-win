@@ -1,19 +1,15 @@
-install:
-	python3 -m venv venv
-	. venv/bin/activate && pip install -r requirements.txt
-	sudo pacman -S --noconfirm xclip
-	mkdir -p ~/.local/bin
-	mv ../yt2mp3 ~/.local/bin/
-	chmod +x ~/.local/bin/yt2mp3/yt2mp3
-	export PATH="\$PATH:\$HOME\.local\bin\yt2mp3"
-	source ~/.bashrc
-	source venv/bin/activate
+# Define paths
+APP_DIR=$(HOME)/yt2mp3
+SCRIPT_NAME=yt2mp3
+EXEC_PATH=/usr/local/bin/$(SCRIPT_NAME)
 
+# Install dependencies from requirements.txt
+install-requirements:
+	pip install -r $(APP_DIR)/requirements.txt
 
-uninstall:
-	rm -rf ~/.local/bin/yt2mp3
-	rm -rf venv
-	sed -i '/export PATH="\$PATH:\$HOME\.local\bin\yt2mp3"/d' ~/.bashrc
-	source ~/.bashrc
+# Create a symbolic link to the script in /usr/local/bin for global access
+create-symlink:
+	ln -sf $(APP_DIR)/app.py $(EXEC_PATH)
 
-reinstall: uninstall install
+# Install dependencies and create symlink
+install: install-requirements create-symlink
