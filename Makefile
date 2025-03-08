@@ -1,6 +1,7 @@
 APP_DIR=$(HOME)/yt2mp3
 SCRIPT_NAME=yt2mp3
 EXEC_PATH=/usr/local/bin/$(SCRIPT_NAME)
+VENV_DIR=$(APP_DIR)/venv
 
 create-venv:
 	@if [ ! -d $(VENV_DIR) ]; then \
@@ -11,7 +12,7 @@ create-venv:
 	fi
 
 install-requirements:
-	pip install -r $(APP_DIR)/requirements.txt
+	$(VENV_DIR)/bin/pip install -r $(APP_DIR)/requirements.txt
 
 create-symlink:
 	ln -sf $(APP_DIR)/app.py $(EXEC_PATH)
