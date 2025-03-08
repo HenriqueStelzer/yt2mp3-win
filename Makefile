@@ -6,9 +6,6 @@ install:
 	sudo pacman -S --noconfirm xclip
 	mkdir -p ~/.local/bin
 	mv ../yt2mp3 ~/.local/bin/
-	sudo chmod +x ~/.local/bin/yt2mp3/yt2mp3
-	echo "alias yt2mp3='~/.local/bin/yt2mp3/yt2mp3'" >> ~/.bashrc
-	source ~/.bashrc
 
 uninstall:
 	rm -rf ~/.local/bin/yt2mp3
