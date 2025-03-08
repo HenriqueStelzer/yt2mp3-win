@@ -18,7 +18,7 @@ create-symlink:
 	ln -sf $(APP_DIR)/app.py $(EXEC_PATH)
 
 make-executable:
-	chmod +x ~/yt2mp3/app.py
+	chmod +x $(APP_DIR)/app.py
 
 
 install: create-venv install-requirements create-symlink
