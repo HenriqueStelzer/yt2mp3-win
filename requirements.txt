@@ -1,6 +1,5 @@
-InquirerPy
-pyperclip
-python-vlc
 pytubefix
 youtube_search
 mutagen
+InquirerPy
+requests
