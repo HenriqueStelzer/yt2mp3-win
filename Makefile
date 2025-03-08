@@ -6,6 +6,9 @@ install:
 	sudo pacman -S --noconfirm xclip
 	mkdir -p ~/.local/bin
 	mv ../yt2mp3 ~/.local/bin/
+	chmod +x INSTALL_DIR/yt2mp3
+	echo 'export PATH="$PATH:$HOME/.local/bin/yt2mp3"' >> ~/.bashrc
+	source ~/.bashrc
 
 uninstall:
 	rm -rf ~/.local/bin/yt2mp3
