@@ -11,5 +11,7 @@ install:
 uninstall:
 	rm -rf ~/.local/bin/yt2mp3
 	rm -rf venv
+	sed -i '/export PATH="\$PATH:\$HOME\.local\bin\yt2mp3"/d' ~/.bashrc
+	source ~/.bashrc
 
 reinstall: uninstall install
