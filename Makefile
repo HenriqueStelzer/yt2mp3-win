@@ -15,7 +15,7 @@ install-requirements:
 	$(VENV_DIR)/bin/pip install -r $(APP_DIR)/requirements.txt
 
 create-symlink:
-	ln -sf $(APP_DIR)/app.py $(EXEC_PATH)
+	sudo ln -sf $(APP_DIR)/app.py $(EXEC_PATH)
 
 make-executable:
 	chmod +x $(APP_DIR)/app.py
