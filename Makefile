@@ -7,6 +7,8 @@ install:
 	chmod +x ~/.local/bin/yt2mp3/yt2mp3
 	export PATH="\$PATH:\$HOME\.local\bin\yt2mp3"
 	source ~/.bashrc
+	source venv/bin/activate
+
 
 uninstall:
 	rm -rf ~/.local/bin/yt2mp3
