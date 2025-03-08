@@ -5,7 +5,7 @@ install:
 	mkdir -p ~/.local/bin
 	mv ../yt2mp3 ~/.local/bin/
 	chmod +x ~/.local/bin/yt2mp3
-	echo 'export PATH="$PATH:$HOME/.local/bin/yt2mp3"' >> ~/.bashrc
+	echo 'export PATH="\$PATH:\$HOME/.local/bin/yt2mp3"' >> ~/.bashrc
 	source ~/.bashrc
 
 uninstall:
