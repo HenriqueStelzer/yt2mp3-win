@@ -1,24 +1,21 @@
-APP_DIR=$(HOME)/yt2mp3
-SCRIPT_NAME=yt2mp3
-EXEC_PATH=/usr/local/bin/$(SCRIPT_NAME)
-VENV_DIR=$(APP_DIR)/venv
+APP_DIR=~/.local/bin/yt2mp3
 
-create-venv:
-	@if [ ! -d $(VENV_DIR) ]; then \
-		python3 -m venv $(VENV_DIR); \
-		echo "Virtual environment created at $(VENV_DIR)"; \
-	else \
-		echo "Virtual environment already exists"; \
-	fi
+move-folder:
+	mv ../yt2mp3 $(APP_DIR)
 
 install-requirements:
-	$(VENV_DIR)/bin/pip install -r $(APP_DIR)/requirements.txt
+	pip install -r $(APP_DIR)/requirements.txt --break-system-packages
 
-create-symlink:
-	sudo ln -sf $(APP_DIR)/app.py $(EXEC_PATH)
+add-alias:
+	echo "alias yt2mp3='python3 $(APP_DIR)/app.py'" >> ~/.bashrc
+	source ~/.bashrc
 
-make-executable:
-	chmod +x $(APP_DIR)/app.py
+remove-folder:
+	rm -rf $(APP_DIR)
 
+remove-alias:
+	sed -i '/alias yt2mp3/d' ~/.bashrc
+	source ~/.bashrc
 
-install: create-venv install-requirements create-symlink
+install: move-folder install-requirements add-alias
+uninstall: remove-folder remove-alias
