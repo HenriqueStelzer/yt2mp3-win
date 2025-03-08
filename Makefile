@@ -4,7 +4,7 @@ install:
 	sudo pacman -S --noconfirm xclip
 	mkdir -p ~/.local/bin
 	mv ../yt2mp3 ~/.local/bin/
-	chmod +x ~/.local/bin/yt2mp3
+	chmod +x ~/.local/bin/yt2mp3/yt2mp3
 	echo 'export PATH="\$PATH:\$HOME/.local/bin/yt2mp3"' >> ~/.bashrc
 	source ~/.bashrc
 
