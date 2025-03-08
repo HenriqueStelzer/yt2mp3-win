@@ -6,7 +6,6 @@ install:
 	sudo pacman -S --noconfirm xclip
 	mkdir -p ~/.local/bin
 	mv ../yt2mp3 ~/.local/bin/
-	mv yt2mp3 ~/.local/bin/
 
 uninstall:
 	rm -rf ~/.local/bin/yt2mp3
