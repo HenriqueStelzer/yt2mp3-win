@@ -5,6 +5,7 @@ move-folder:
 
 install-requirements:
 	pip install -r $(APP_DIR)/requirements.txt --break-system-packages
+	sudo pacman -S ffmpeg
 
 add-alias:
 	echo "alias yt2mp3='python3 $(APP_DIR)/app.py'" >> ~/.bashrc
