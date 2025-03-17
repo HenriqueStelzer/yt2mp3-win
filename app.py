@@ -1,5 +1,11 @@
+#!/usr/bin/env python3
+
+import librosa
+import librosa.display
 import requests
 import os
+import soundfile as sf
+import subprocess
 
 from InquirerPy import prompt
 from io import BytesIO
@@ -8,12 +14,15 @@ from youtube_search import YoutubeSearch
 from mutagen.mp3 import MP3, HeaderNotFoundError
 from mutagen.id3 import ID3, APIC, TIT2, TPE1, TAL
 
+
 # requirements.txt
 #
 # pytubefix
 # youtube_search
 # mutagen
 # InquirerPy
+# librosa
+# soundfile
 
 def search(user_input):
     try:        
@@ -36,23 +45,42 @@ def search(user_input):
         youtube_audio = youtube_video.streams.filter(only_audio=True).first()
         
         output_file = youtube_audio.download(output_path='.')
-        base = os.path.splitext(output_file)[0]
-        os.rename(output_file, base + ".mp3")
+
+        artist = input("What is the artist name? ")
+        if not artist:
+            artist = chosen_video["channel"]
         
+        music = input("What is the music name? ") 
+        if not music:
+            music = chosen_video["title"]
+
+        base = os.path.splitext(artist + " - " + music)[0]
+
+        os.rename(output_file, base + ".mp3")
+
+        subprocess.run(["ffmpeg", "-loglevel", "error", "-i", f"{base}.mp3", f"{base}.wav"], check=True)
+        subprocess.run(["rm", "-f", f"{base}.mp3"], check=True)
+
+        if input("Modify audio? (y/n) ") in ["y", "Y"]:
+            semitones = float(input("How many semitones to shift? (0 for none): "))
+            speed = float(input("Speed factor (1.0 for normal): "))
+            audio_modify(base + ".wav", semitones, speed)
+        
+
         try:
-            audio = MP3(base + ".mp3", ID3=ID3)
+            audio = MP3(base + ".wav", ID3=ID3)
             audio.add_tags()
         except HeaderNotFoundError:
-            return
+            return base + ".wav"
         
         audio.tags.add(TIT2(
             encoding=3,
-            text=chosen_video["title"]
+            text=music
             ))
         
         audio.tags.add(TPE1(
             encoding=3,
-            text=chosen_video["channel"]
+            text=artist
             ))
         
         audio.tags.add(TAL(
@@ -77,12 +105,26 @@ def search(user_input):
         os.remove("cover.jpg")
         
         audio.save()
-        
+
+        subprocess.run(["ffmpeg", "-loglevel", "error", "-i", f"{base}.wav", "-b:a", "192k", f"{base}.mp3"], check=True)
+        os.remove(f"{base}.wav")
+
         return base + ".mp3"
 
     except KeyboardInterrupt:
         
         return 1
+
+def audio_modify(path, semitones, speed):
+    audio_data, sample_rate = librosa.load(path, sr=None)
+
+    if semitones != 0:
+        shifted_audio = librosa.effects.pitch_shift(y=audio_data, sr=sample_rate, n_steps=semitones)
+
+    if speed != 1:
+        audio_data = librosa.effects.time_stretch(audio_data, speed)
+
+    sf.write(path, shifted_audio, sample_rate)
     
 if __name__ == "__main__":
 
@@ -90,7 +132,7 @@ if __name__ == "__main__":
     
     if file == 1:
         print("\033[91m" + "Download interrupted." + "\033[0m")
-        
-    elif input("Do you want to delete the file? (y/n): ") == "y":
-        os.remove(file)
-        print("\033[92m" + "File sucessfully deleted." + "\033[0m")
+    
+    else:
+        print("\033[92m" + str(file) + " was downloaded sucessfully." + "\033[0m")
+
