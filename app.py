@@ -66,12 +66,15 @@ def search(user_input):
             speed = float(input("Speed factor (1.0 for normal): "))
             audio_modify(base + ".wav", semitones, speed)
         
+        subprocess.run(["ffmpeg", "-loglevel", "error", "-i", f"{base}.wav", "-b:a", "192k", f"{base}.mp3"], check=True)
+        os.remove(f"{base}.wav")
 
         try:
-            audio = MP3(base + ".wav", ID3=ID3)
-            audio.add_tags()
+            audio = MP3(base + ".mp3", ID3=ID3)
+            if audio.tags is None:
+                audio.add_tags()
         except HeaderNotFoundError:
-            return base + ".wav"
+            return base + ".mp3"
         
         audio.tags.add(TIT2(
             encoding=3,
@@ -106,8 +109,6 @@ def search(user_input):
         
         audio.save()
 
-        subprocess.run(["ffmpeg", "-loglevel", "error", "-i", f"{base}.wav", "-b:a", "192k", f"{base}.mp3"], check=True)
-        os.remove(f"{base}.wav")
 
         return base + ".mp3"
 
@@ -119,12 +120,12 @@ def audio_modify(path, semitones, speed):
     audio_data, sample_rate = librosa.load(path, sr=None)
 
     if semitones != 0:
-        shifted_audio = librosa.effects.pitch_shift(y=audio_data, sr=sample_rate, n_steps=semitones)
+        modified_audio = librosa.effects.pitch_shift(y=audio_data, sr=sample_rate, n_steps=semitones)
 
     if speed != 1:
-        audio_data = librosa.effects.time_stretch(audio_data, speed)
+        modified_audio = librosa.effects.time_stretch(y=audio_data, rate=speed)
 
-    sf.write(path, shifted_audio, sample_rate)
+    sf.write(path, modified_audio, sample_rate)
     
 if __name__ == "__main__":
 
