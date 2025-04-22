@@ -1,7 +1,7 @@
 ## Installation
 Clone the repository
 ```sh
-git clone https://github.com/HenriqueOliveiraCoder/yt2mp3-win
+git clone https://github.com/henriquestelzer/yt2mp3-win
 ```
 Enter the repository folder
 ```sh
