@@ -1,5 +1,5 @@
 @echo off
-set ".\yt2mp3-win"
+set "yt2mp3-win"
 
 if "%1"=="install" (
     if not exist "%APP_DIR%" mkdir "%APP_DIR%"
