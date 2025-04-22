@@ -1,20 +1,19 @@
 @echo off
-set "yt2mp3-win"
+set "APP_DIR=C:\Users\%username%\yt2mp3-win"
 
 if "%1"=="install" (
-    if not exist "%APP_DIR%" mkdir "%APP_DIR%"
-    xcopy /E /I /Y "..\yt2mp3" "%APP_DIR%"
     pip install -r "%APP_DIR%\requirements.txt"
     winget install ffmpeg -e --id Gyan.FFmpeg
-    echo doskey yt2mp3=python "%APP_DIR%\app.py" $* > "%USERPROFILE%\yt2mp3_alias.bat"
+    echo doskey yt2mp3=python "%APP_DIR%\app.py" $* > "%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\yt2mp3_alias.cmd"
+    REG ADD "HKCU\Software\Microsoft\Command Processor" /v AutoRun /t REG_EXPAND_SZ /d "%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\yt2mp3_alias.cmd" /f   
     echo Installation completed.
     exit /b
 )
 
 if "%1"=="uninstall" (
-    rmdir /S /Q "%APP_DIR%"
-    del "%USERPROFILE%\yt2mp3_alias.bat"
+    del "%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\yt2mp3_alias.cmd"
     echo Uninstallation completed.
+    rmdir /S /Q "%APP_DIR%"
     exit /b
 )
 
